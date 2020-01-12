@@ -23,3 +23,7 @@ export function promiseEvery<T>(promises: Promise<T>[], ...fns: ((val: T) => voi
     })
 
 }
+type Module = typeof import('./main')
+export async function handleImport(path: string) {
+    return Promise.resolve((await import(path)))
+}

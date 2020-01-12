@@ -21,3 +21,6 @@ export function promiseEvery(promises, ...fns) {
         });
     });
 }
+export async function handleImport(path) {
+    return Promise.resolve((await import(path)));
+}

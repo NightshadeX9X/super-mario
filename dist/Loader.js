@@ -13,9 +13,8 @@ export default class Loader {
                 res(get);
             else {
                 let image = new Image();
-                image.addEventListener('load', () => res(image));
+                image.addEventListener('load', () => { res(image); this.urls.set(url, image); });
                 image.src = url;
-                this.urls.set(url, image);
             }
         });
     }
