@@ -3,16 +3,16 @@ import Loader from './Loader.js';
 import { promiseEvery } from './Util.js';
 
 let loader = new Loader();
+loader.paths.add('image', 'images/')
 let progressBar = <HTMLProgressElement>document.getElementById('loadingBar');
 let promises: Promise<HTMLImageElement>[] =
     [
-        loader.image('https://media.geeksforgeeks.org/wp-content/uploads/20190719161521/core.jpg'),
+        loader.image('tileset.png'),
     ];
 progressBar.setAttribute('max', `${promises.length}`);
 
 (async function () {
     await promiseEvery(promises, loaded => { progressBar.value++; console.log("Loaded:", loaded) });
-    await loader.text('')
 
 
 

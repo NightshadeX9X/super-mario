@@ -2,9 +2,11 @@ import { Lib } from "./main.js";
 export default class Loader {
     constructor() {
         this.urls = new Lib.Collection();
-        this._paths = new Lib.Collection([{ key: 'json', value: '' }, { key: 'text', value: '' }, { key: 'blob', value: '' },]);
+        this._paths = new Lib.Collection();
     }
-    async image(url) {
+    async image(_url) {
+        let path = this._paths.get('image');
+        let url = ((path !== null && path !== void 0 ? path : "")) + _url;
         return new Promise(async (res) => {
             let get = this.urls.get(url);
             if (get !== undefined)
@@ -17,7 +19,8 @@ export default class Loader {
             }
         });
     }
-    async file(url, type) {
+    async file(_url, type) {
+        let url = _url;
         let get = this.urls.get(url);
         if (get !== undefined)
             return (get);
@@ -27,19 +30,22 @@ export default class Loader {
             return data;
         }
     }
-    async json(url) {
+    async json(_url) {
         let path = this._paths.get('json');
-        let json = await this.file(path + url, 'json');
+        let url = ((path !== null && path !== void 0 ? path : "")) + _url;
+        let json = await this.file(url, 'json');
         return json;
     }
-    async text(url) {
+    async text(_url) {
         let path = this._paths.get('text');
-        let string = await this.file(path + url, 'text');
+        let url = ((path !== null && path !== void 0 ? path : "")) + _url;
+        let string = await this.file(url, 'text');
         return string;
     }
-    async blob(url) {
+    async blob(_url) {
         let path = this._paths.get('blob');
-        let blob = await this.file(path + url, 'blob');
+        let url = ((path !== null && path !== void 0 ? path : "")) + _url;
+        let blob = await this.file(url, 'blob');
         return blob;
     }
     get paths() {
