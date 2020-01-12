@@ -8,7 +8,6 @@ export default class Spritesheet {
         this.buffers = new Collection();
     }
     register(name, spos, adj = new Vector(1)) {
-        console.log("img:", this.image);
         let { cnv: buffer, ctx } = createCanvas(this.size);
         ctx.drawImage(this.image, spos.x, spos.y, this.size.x * adj.x, this.size.y * adj.y, 0, 0, this.size.x * adj.x, this.size.y * adj.y);
         this.buffers.set(name, buffer);

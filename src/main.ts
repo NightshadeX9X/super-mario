@@ -16,8 +16,19 @@ async function loadBackgroundSprites() {
     let backgroundSprites = new Spritesheet(image, new Vector(16));
     backgroundSprites.registerSprite('ground', new Vector());
     backgroundSprites.registerSprite('sky', new Vector(3, 23));
+
+    return backgroundSprites
 }
 
+function drawBackgroundSprites(backgrounds: Level["backgrounds"], backgroundSprites: Spritesheet, ctx: CanvasRenderingContext2D) {
+    backgrounds.forEach(bg => {
+        for (let y = bg.ranges[0]; y < bg.ranges[1]; y++) {
+            for (let x = bg.ranges[2]; x < bg.ranges[3]; x++) {
+                backgroundSprites.drawSprite(bg.tile, ctx, new Vector(y, x))
+            }
+        }
+    })
+}
 (async function () {
     let promises: any =
         [
@@ -28,16 +39,10 @@ async function loadBackgroundSprites() {
     let [level_import, backgroundSprites] =
         <[any, Spritesheet]>await promiseEvery(promises, loaded => { progressBar.value++; console.log("Loaded:", loaded) });
     let level: Level = level_import.default;
-    console.log("All necessary assets loaded.")
+    console.log(3, level, level_import, backgroundSprites)
     let { cnv, ctx } = createCanvas(new Vector(480, 240), true, true);
 
-    level.backgrounds.forEach(bg => {
-        for (let y = bg.ranges[0]; y < bg.ranges[1]; y++) {
-            for (let x = bg.ranges[2]; x < bg.ranges[3]; x++) {
-                backgroundSprites.drawSprite(bg.tile, ctx, new Vector(y, x))
-            }
-        }
-    })
+    drawBackgroundSprites(level.backgrounds, backgroundSprites, ctx)
 
 
 

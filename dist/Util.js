@@ -14,13 +14,21 @@
 export function promiseEvery(promises, ...fns) {
     return new Promise(res => {
         let vals = [];
+        let countDone = 0;
         promises.forEach((promise, i) => {
             let fn = fns[i < fns.length ? i : fns.length - 1] || ((val) => { });
-            promise.then(val => { fn(val); vals.push(val); if (vals.length >= promises.length)
-                res(vals); });
+            promise.then(val => {
+                fn(val);
+                vals[i] = val;
+                countDone++;
+                if (countDone >= promises.length)
+                    res(vals);
+            });
         });
     });
 }
 export async function handleImport(path) {
-    return Promise.resolve((await import(path)));
+    let mod = await import(path);
+    console.log("mod", mod);
+    return mod;
 }

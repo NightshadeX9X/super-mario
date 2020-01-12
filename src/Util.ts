@@ -16,14 +16,22 @@ export function promiseEvery<T>(promises: Promise<T>[], ...fns: ((val: T) => voi
 
         let vals: T[] = [];
 
+        let countDone = 0;
         promises.forEach((promise, i) => {
             let fn = fns[i < fns.length ? i : fns.length - 1] || ((val: T) => { });
-            promise.then(val => { fn(val); vals.push(val); if (vals.length >= promises.length) res(vals); });
+            promise.then(val => {
+                fn(val);
+                vals[i] = val;
+                countDone++;
+                if (countDone >= promises.length) res(vals);
+            });
         });
     })
 
 }
 type Module = typeof import('./main')
 export async function handleImport(path: string) {
-    return Promise.resolve((await import(path)))
+    let mod = await import(path);
+    console.log("mod", mod)
+    return mod;
 }
